@@ -4,7 +4,8 @@ public class Tile : MonoBehaviour
 {
     [HideInInspector]
     public Unit Unit;
-    private int x, y;
+    [HideInInspector]
+    public int x, y;
    
     public void Init(int x, int y)
     {
@@ -27,6 +28,6 @@ public class Tile : MonoBehaviour
     public void SetUnit(Unit unit)
     {
         Unit = unit;
-        unit.ParentTile = this;
+        //unit.transform.position = transform.position;
     }
 }
