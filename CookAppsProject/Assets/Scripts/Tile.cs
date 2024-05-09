@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tile : MonoBehaviour
 {
@@ -6,12 +8,15 @@ public class Tile : MonoBehaviour
     public Unit Unit;
     [HideInInspector]
     public int x, y;
+    private Image _image;
+    private const float ToggleColorTime = 0.5f;
    
     public void Init(int x, int y)
     {
         Unit = null;
         this.x = x;
         this.y = y;
+        _image = GetComponent<Image>();
     }
 
     public bool CheckUnit()
@@ -28,6 +33,17 @@ public class Tile : MonoBehaviour
     public void SetUnit(Unit unit)
     {
         Unit = unit;
-        //unit.transform.position = transform.position;
+    }
+
+    public void ChangeColor(bool isMine)
+    {
+        StartCoroutine(ToggleColor(isMine));
+    }
+
+    IEnumerator ToggleColor(bool isMine)
+    {
+        _image.color = isMine ? Color.blue : Color.red;
+        yield return new WaitForSecondsRealtime(ToggleColorTime);
+        _image.color = Color.white;
     }
 }

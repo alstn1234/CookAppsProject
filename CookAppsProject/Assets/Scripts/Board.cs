@@ -44,6 +44,9 @@ public class Board : MonoBehaviour
     {
         var myUnits = GameManager.instance.MyUnits;
         var enemyUnits = GameManager.instance.EnemyUnits;
+        myUnits.Clear();
+        enemyUnits.Clear();
+        
         GameObject unitObj;
         foreach (var unit in Resources.LoadAll<GameObject>("Prefabs/Unit/My"))
         {

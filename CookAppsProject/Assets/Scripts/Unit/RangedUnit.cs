@@ -8,17 +8,21 @@ public class RangedUnit : Unit, IUnitAction
         Hp = 10;
     }
 
-    public int Damage = 6;
+    //public int Damage = 4;
+    public int Damage = 1;
 
     private const int AttackRange = 9;
 
     public void Attack()
     {
-        animator.SetBool("IsMove", false);
+        FlipX();
         animator.SetTrigger("Attack");
-        if (Target != null)
+
+        if (Target != null && !Target.IsTeam(IsMine))
+        {
             Target.GetComponent<IDamage>().TakeDamage(Damage);
-        // 공격 처리
+            Target.ParentTile.ChangeColor(IsMine);
+        }
     }
 
     public bool CanAttack()

@@ -10,17 +10,22 @@ public class MeleeUnit : Unit, IUnitAction
         Hp = 20;
     }
 
-    public int Damage = 10;
+    //public int Damage = 10;
+    public int Damage = 1;
 
     private const int AttackRange = 2;
 
 
     public void Attack()
     {
-        animator.SetBool("IsMove", false);
+        FlipX();
         animator.SetTrigger("Attack");
-        if(Target != null)
+
+        if (Target != null && !Target.IsTeam(IsMine))
+        {
             Target.GetComponent<IDamage>().TakeDamage(Damage);
+            Target.ParentTile.ChangeColor(IsMine);
+        }
 
         // 공격 처리
     }

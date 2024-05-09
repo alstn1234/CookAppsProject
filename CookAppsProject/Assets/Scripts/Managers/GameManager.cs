@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,15 +15,17 @@ public class GameManager : MonoBehaviour
     public Tile[,] Board;
     public List<Unit> MyUnits = new List<Unit>();
     public List<Unit> EnemyUnits = new List<Unit>();
-    
+
     public GameMode Mode = GameMode.Ready;
 
+    public TextMeshProUGUI resultText;
+    public GameObject BattleEndPopup;
     public Action OnBattle;
     public Action OnEndBattle;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -36,7 +40,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         OnBattle += Battle;
-        OnEndBattle += Ready;
+        OnEndBattle += EndBattle;
     }
 
     private void Init()
@@ -54,9 +58,30 @@ public class GameManager : MonoBehaviour
     }
     public void CheckEndGame()
     {
-        if(MyUnits.Count == 0 && EnemyUnits.Count == 0)
+        if (MyUnits.Count == 0 || EnemyUnits.Count == 0)
         {
             OnEndBattle?.Invoke();
         }
+    }
+    public void EndBattle()
+    {
+        string resultStr = "";
+        StartCoroutine(End());
+        if (MyUnits.Count == 0 && EnemyUnits.Count == 0)
+            resultStr = "무승부";
+        else if (MyUnits.Count == 0)
+            resultStr = "패배";
+        else
+            resultStr = "승리";
+
+        resultText.text = resultStr;
+    }
+
+    IEnumerator End()
+    {
+        float DelayTime = 0.9f;
+        yield return new WaitForSeconds(DelayTime);
+        Time.timeScale = 0f;
+        BattleEndPopup.SetActive(true);
     }
 }

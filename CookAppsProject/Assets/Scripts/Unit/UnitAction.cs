@@ -29,7 +29,7 @@ public class UnitAction : MonoBehaviour
 
     IEnumerator StartBattle()
     {
-        WaitForSecondsRealtime wfsr = new WaitForSecondsRealtime(1f);
+        WaitForSeconds wfsr = new WaitForSeconds(1f);
 
         while (true)
         {
