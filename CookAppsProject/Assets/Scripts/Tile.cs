@@ -19,6 +19,10 @@ public class Tile : MonoBehaviour
         _image = GetComponent<Image>();
     }
 
+    /// <summary>
+    /// null -> true, not null -> false
+    /// </summary>
+    /// <returns></returns>
     public bool CheckUnit()
     {
         if (Unit != null) return false;
