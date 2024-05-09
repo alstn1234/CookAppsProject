@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Unit : MonoBehaviour, IDamage
 {
-    private int _hp = 10;
+    private int _hp;
     public int Hp
     {
         get
@@ -16,20 +17,35 @@ public class Unit : MonoBehaviour, IDamage
         set
         {
             _hp = value < 0 ? 0 : value;
+            if (_hp <= 0) Die();
         }
     }
 
     [HideInInspector]
     public Tile ParentTile;
-    public Unit Target;
+    protected Unit Target;
 
     protected Animator animator;
     private UnitAI _unitAI;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        _unitAI = GetComponent<UnitAI>();
+        _unitAI = new UnitAI();
         animator = GetComponent<Animator>();
+    }
+    protected void Die()
+    {
+        if (gameObject.layer == LayerMask.NameToLayer("MyUnit"))
+        {
+            GameManager.instance.MyUnits.Remove(this);
+        }
+        else
+        {
+            GameManager.instance.EnemyUnits.Remove(this);
+        }
+        Destroy(gameObject, 1f);
+
+        GameManager.instance.CheckEndGame();
     }
 
     public void SetParentTile(Tile newParent)
@@ -50,10 +66,11 @@ public class Unit : MonoBehaviour, IDamage
     public void TakeDamage(int damage)
     {
         Hp -= damage;
-        Debug.Log($"{damage}ÀÇ µ¥¹ÌÁö¸¦ ÀÔÀ½");
+        Debug.Log(Hp);
+        Debug.Log($"{damage}ì˜ ë°ë¯¸ì§€ë¥¼ ì…ìŒ");
     }
 
-    // °¡±î¿î ÀûÀ» Ã£¾Æ¼­ targetÀ¸·Î ¼³Á¤ÇÏ´Â ¸Ş¼­µå
+    // ê°€ê¹Œìš´ ì ì„ ì°¾ì•„ì„œ targetìœ¼ë¡œ ì„¤ì •í•˜ëŠ” ë©”ì„œë“œ
     public void SetTarget()
     {
         int distance = -1;
@@ -92,29 +109,25 @@ public class Unit : MonoBehaviour, IDamage
     }
     public void Move()
     {
-        Debug.Log("move");
         animator.SetBool("IsMove", true);
         var nextPos = NextPos();
-        Debug.Log(nextPos.x + nextPos.y);
         var nextTile = GameManager.instance.Board[nextPos.x, nextPos.y];
         StartCoroutine(MoveNextPos(nextTile));
-        SetParentTile(nextTile);
     }
 
     IEnumerator MoveNextPos(Tile nextTile)
     {
-        float finalTime = 0.8f;
+        float finalTime = 0.5f;
         float time = 0f;
-        Vector3 vec = nextTile.transform.position - ParentTile.transform.position;
-        float distance = Mathf.Abs(vec.x) + Mathf.Abs(vec.y);
-        var dir = Vector3.Normalize(vec);
-        while (true)
+        float per = 0f;
+        while (per < 1)
         {
-            if (time > finalTime) break;
-            var deltaTime = Time.deltaTime;
-            transform.position += distance * dir / finalTime * deltaTime;
-            time += deltaTime;
+            time += Time.deltaTime;
+            per = time / finalTime;
+            transform.position = Vector2.Lerp(ParentTile.transform.position, nextTile.transform.position, per);
+            yield return null;
         }
-        yield return null;
+        SetParentTile(nextTile);
+        animator.SetBool("IsMove", false);
     }
 }

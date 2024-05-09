@@ -52,4 +52,11 @@ public class GameManager : MonoBehaviour
     {
         Mode = GameMode.Ready;
     }
+    public void CheckEndGame()
+    {
+        if(MyUnits.Count == 0 && EnemyUnits.Count == 0)
+        {
+            OnEndBattle?.Invoke();
+        }
+    }
 }

@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 645775528229303695}
   - component: {fileID: 7868340177436488322}
   - component: {fileID: 4237560630611201834}
-  - component: {fileID: 4333787707951404924}
+  - component: {fileID: 2290003710185084834}
+  - component: {fileID: 5418171708947804889}
   m_Layer: 8
   m_Name: EnemyMeleeAOEUnit
   m_TagString: Untagged
@@ -99,7 +100,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4333787707951404924
+--- !u!114 &2290003710185084834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +109,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6930274147580956922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 647e4dcee60094d4691100d24a2a1519, type: 3}
+  m_Script: {fileID: 11500000, guid: 49ac5f2118878134885487896e992019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ParentTile: {fileID: 0}
+  Target: {fileID: 0}
+  Damage: 8
+--- !u!114 &5418171708947804889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6930274147580956922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69fef29967ff8c748a6beb733b6e9e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
