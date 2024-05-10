@@ -7,7 +7,7 @@ public class MeleeUnit : Unit, IUnitAction
     protected override void Awake()
     {
         base.Awake();
-        Hp = 30;
+        unitHp.MaxHp = 30;
     }
 
     public int Damage;

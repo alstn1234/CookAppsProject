@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeAOEUnit : Unit, IUnitAction
@@ -5,7 +6,7 @@ public class MeleeAOEUnit : Unit, IUnitAction
     protected override void Awake()
     {
         base.Awake();
-        Hp = 20;
+        unitHp.MaxHp = 20;
     }
 
     public int Damage;
@@ -16,9 +17,9 @@ public class MeleeAOEUnit : Unit, IUnitAction
         FlipX();
         animator.SetTrigger("Attack");
 
-        // 광역 딜 처리
+        // 광역 딜
         var board = GameManager.instance.Board;
-        var attackRangeList = unitAI.FindAttackRange(ParentTile.x, ParentTile.y);
+        var attackRangeList = FindAttackRange(ParentTile.x, ParentTile.y);
         foreach (var AttackRange in attackRangeList)
         {
             var attackTile = board[AttackRange.x, AttackRange.y];
@@ -28,12 +29,33 @@ public class MeleeAOEUnit : Unit, IUnitAction
                 attackTile.Unit.TakeDamage(Damage);
             }
         }
-
-        // 공격 처리
     }
 
     public bool CanAttack()
     {
         return IsInAttackRange(AttackRange);
+    }
+
+    public List<Vector2Int> FindAttackRange(int x, int y)
+    {
+        List<Vector2Int> resultVec = new List<Vector2Int>();
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (i == 0 && i == j) continue;
+                Vector2Int vec = new Vector2Int(x + i, y + j);
+                if (IsValidPos(vec))
+                {
+                    resultVec.Add(vec);
+                }
+            }
+        }
+        return resultVec;
+    }
+
+    private bool IsValidPos(Vector2Int nextVec)
+    {
+        return nextVec.x >= 0 && nextVec.y >= 0 && nextVec.x < GameManager.instance.Width && nextVec.y < GameManager.instance.Height;
     }
 }

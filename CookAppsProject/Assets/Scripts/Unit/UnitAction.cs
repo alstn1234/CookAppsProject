@@ -5,11 +5,11 @@ using UnityEngine;
 public class UnitAction : MonoBehaviour
 {
     private IUnitAction _unitAction;
-    private Unit _unit;
+    private UnitMovement _unitMovement;
     private void Awake()
     {
         _unitAction = GetComponent<IUnitAction>();
-        _unit = GetComponent<Unit>();
+        _unitMovement = GetComponent<UnitMovement>();
     }
 
     private void Start()
@@ -39,7 +39,7 @@ public class UnitAction : MonoBehaviour
             }
             else
             {
-                _unit.Move();
+                _unitMovement.Move();
             }
             yield return wfsr;
         }

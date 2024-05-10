@@ -102,24 +102,6 @@ public class UnitAI
         return minCostPos;
     }
 
-    public List<Vector2Int> FindAttackRange(int x, int y)
-    {
-        List<Vector2Int> resultVec = new List<Vector2Int>();
-        for (int i = -1; i <= 1; i++)
-        {
-            for (int j = -1; j <= 1; j++)
-            {
-                if (i == 0 && i == j) continue;
-                Vector2Int vec = new Vector2Int(x + i, y + j);
-                if (IsValidPos(vec))
-                {
-                    resultVec.Add(vec);
-                }
-            }
-        }
-        return resultVec;
-    }
-
     private int CalDistance(Vector2Int currentVec, Vector2Int targetVec)
     {
         return Mathf.Abs(currentVec.x - targetVec.x) + Mathf.Abs(currentVec.y - targetVec.y);

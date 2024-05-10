@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    private int _width = 10, _height = 5;
+    public int Width = 10, Height = 5;
 
     private int _stage;
     public int Stage
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void Init()
     {
-        Board = new Tile[_width, _height];
+        Board = new Tile[Width, Height];
         UnitPrefab = new Dictionary<string, GameObject>();
         foreach (var unit in Resources.LoadAll<GameObject>("Prefabs/Unit"))
         {

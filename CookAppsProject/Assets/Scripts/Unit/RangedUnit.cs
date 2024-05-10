@@ -5,7 +5,7 @@ public class RangedUnit : Unit, IUnitAction
     protected override void Awake()
     {
         base.Awake();
-        Hp = 15;
+        unitHp.MaxHp = 15;
     }
 
     public int Damage;

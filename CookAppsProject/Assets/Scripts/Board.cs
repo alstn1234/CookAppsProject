@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    private int _width = 10;
-    private int _height = 5;
+    private int _width;
+    private int _height;
     private Tile[,] _board;
     [SerializeField] private GameObject _unitsObj;
     private GameObject _tilePrefab;
@@ -18,6 +18,8 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        _width = GameManager.instance.Width;
+        _height = GameManager.instance.Height;
         Init();
     }
 
