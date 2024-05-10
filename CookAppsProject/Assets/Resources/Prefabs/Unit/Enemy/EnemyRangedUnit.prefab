@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentTile: {fileID: 0}
-  Damage: 1
+  Damage: 4
 --- !u!114 &-1612065345331388320
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentTile: {fileID: 0}
-  Damage: 1
+  Damage: 6
 --- !u!114 &-4743128015726012227
 MonoBehaviour:
   m_ObjectHideFlags: 0

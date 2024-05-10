@@ -15,6 +15,6 @@ public class ButtonMethod : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainScene");
-        GameManager.instance.Ready();
+        GameManager.instance.ReadyMode();
     }
 }

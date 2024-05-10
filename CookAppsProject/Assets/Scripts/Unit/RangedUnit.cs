@@ -5,11 +5,10 @@ public class RangedUnit : Unit, IUnitAction
     protected override void Awake()
     {
         base.Awake();
-        Hp = 10;
+        Hp = 15;
     }
 
-    //public int Damage = 4;
-    public int Damage = 1;
+    public int Damage;
 
     private const int AttackRange = 9;
 

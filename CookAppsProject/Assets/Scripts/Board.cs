@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,8 +7,7 @@ public class Board : MonoBehaviour
     private int _width = 10;
     private int _height = 5;
     private Tile[,] _board;
-    [SerializeField] private GameObject _myUnitsObj;
-    [SerializeField] private GameObject _enemyUnitsObj;
+    [SerializeField] private GameObject _unitsObj;
     private GameObject _tilePrefab;
 
     private void Awake()
@@ -46,39 +46,50 @@ public class Board : MonoBehaviour
         var enemyUnits = GameManager.instance.EnemyUnits;
         myUnits.Clear();
         enemyUnits.Clear();
-        
-        GameObject unitObj;
-        foreach (var unit in Resources.LoadAll<GameObject>("Prefabs/Unit/My"))
-        {
-            unitObj = Instantiate(unit, _myUnitsObj.transform);
-            myUnits.Add(unitObj.GetComponent<Unit>());
-        }
-
-        foreach (var unit in Resources.LoadAll<GameObject>("Prefabs/Unit/Enemy"))
-        {
-            unitObj = Instantiate(unit, _enemyUnitsObj.transform);
-            enemyUnits.Add(unitObj.GetComponent<Unit>());
-        }
 
         yield return new WaitForEndOfFrame();
 
-        for (int i = 0; i < myUnits.Count; i++)
-        {
-            int x = i % (_width / 2);
-            int y = i / (_width / 2);
 
-            myUnits[i].SetParentTile(_board[x, y]);
-            myUnits[i].SetPosToParent();
+        // 아군
+        var data = CSVReader.Read($"MyUnitData/Stage{GameManager.instance.Stage}");
+        int idx = 0;
+        foreach (var item in data)
+        {
+            var unitName = item["Name"];
+            var count = int.Parse(item["Count"]);
+            for(int i = 0; i < count; i++)
+            {
+                var unit = GetUnit(unitName);
+                int x = idx % (_width / 2);
+                int y = idx++ / (_width / 2);
+
+                unit.SetParentTile(_board[x, y]);
+                unit.SetPosToParent();
+                myUnits.Add(unit);
+            }
         }
 
-        for (int i = 0; i < enemyUnits.Count; i++)
+        // 적군
+        data = CSVReader.Read($"UnitData/Stage{GameManager.instance.Stage}");
+        foreach (var item in data)
         {
-            int x = i % (_width / 2) + 5;
-            int y = i / (_width / 2);
+            var unitName = item["Name"];
+            var x = int.Parse(item["x"]);
+            var y = int.Parse(item["y"]);
 
-            enemyUnits[i].SetParentTile(_board[x, y]);
-            enemyUnits[i].SetPosToParent();
+            var unit = GetUnit(unitName);
+
+            unit.SetParentTile(_board[x, y]);
+            unit.SetPosToParent();
+            enemyUnits.Add(unit);
+            
         }
     }
 
+    private Unit GetUnit(string unitName)
+    {
+        var unitPrefab = GameManager.instance.UnitPrefab[unitName];
+        var unitObj = Instantiate(unitPrefab, _unitsObj.transform);
+        return unitObj.GetComponent<Unit>();
+    }
 }

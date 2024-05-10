@@ -7,11 +7,10 @@ public class MeleeUnit : Unit, IUnitAction
     protected override void Awake()
     {
         base.Awake();
-        Hp = 20;
+        Hp = 30;
     }
 
-    //public int Damage = 10;
-    public int Damage = 1;
+    public int Damage;
 
     private const int AttackRange = 2;
 
