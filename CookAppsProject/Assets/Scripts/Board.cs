@@ -1,29 +1,43 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Board : MonoBehaviour
 {
     private int _width;
     private int _height;
     private Tile[,] _board;
-    [SerializeField] private GameObject _unitsObj;
     private GameObject _tilePrefab;
+
+    private UnitObjectPool _pool;
+    private List<Unit> myUnits;
+    private List<Unit> enemyUnits;
 
     private void Awake()
     {
         _board = GameManager.instance.Board;
         _tilePrefab = Resources.Load<GameObject>("Prefabs/Board/Tile");
+        myUnits = GameManager.instance.MyUnits;
+        enemyUnits = GameManager.instance.EnemyUnits;
     }
 
     private void Start()
     {
+        _pool = UnitObjectPool.instance;
         _width = GameManager.instance.Width;
         _height = GameManager.instance.Height;
-        Init();
+        GameManager.instance.OnRestart += SetUnit;
+        StartCoroutine(Init());
+    }
+    private void OnDisable()
+    {
+        GameManager.instance.OnRestart -= SetUnit;
     }
 
-    private void Init()
+    IEnumerator Init()
     {
         // 보드판 세팅
         GameObject tileObject;
@@ -31,26 +45,25 @@ public class Board : MonoBehaviour
         {
             for (int x = 0; x < _width; x++)
             {
-                tileObject = Instantiate(_tilePrefab, gameObject.transform);
+                tileObject = Instantiate(_tilePrefab, transform);
                 var tile = tileObject.GetComponent<Tile>();
                 tile.Init(x, y);
 
                 _board[x, y] = tile;
             }
         }
-        // 초기 유닛 세팅
-        StartCoroutine(SetUnit());
-    }
-
-    IEnumerator SetUnit()
-    {
-        var myUnits = GameManager.instance.MyUnits;
-        var enemyUnits = GameManager.instance.EnemyUnits;
-        myUnits.Clear();
-        enemyUnits.Clear();
 
         yield return new WaitForEndOfFrame();
 
+        // 초기 유닛 세팅
+        SetUnit();
+    }
+
+    public void SetUnit()
+    {
+        UnitObjectPool.instance.ResetPool();
+        myUnits.Clear();
+        enemyUnits.Clear();
 
         // 아군
         var data = CSVReader.Read($"MyUnitData/Stage{GameManager.instance.Stage}");
@@ -59,9 +72,9 @@ public class Board : MonoBehaviour
         {
             var unitName = item["Name"];
             var count = int.Parse(item["Count"]);
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var unit = GetUnit(unitName);
+                var unit = _pool.Pop(unitName);
                 int x = idx % (_width / 2);
                 int y = idx++ / (_width / 2);
 
@@ -79,19 +92,12 @@ public class Board : MonoBehaviour
             var x = int.Parse(item["x"]);
             var y = int.Parse(item["y"]);
 
-            var unit = GetUnit(unitName);
+            var unit = _pool.Pop(unitName);
 
             unit.SetParentTile(_board[x, y]);
             unit.SetPosToParent();
             enemyUnits.Add(unit);
-            
         }
     }
 
-    private Unit GetUnit(string unitName)
-    {
-        var unitPrefab = GameManager.instance.UnitPrefab[unitName];
-        var unitObj = Instantiate(unitPrefab, _unitsObj.transform);
-        return unitObj.GetComponent<Unit>();
-    }
 }

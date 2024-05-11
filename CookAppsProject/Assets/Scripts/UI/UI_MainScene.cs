@@ -13,12 +13,12 @@ public class UI_MainScene : MonoBehaviour
     private void Start()
     {
         Init();
-        GameManager.instance.OnUpdateStage += UpdateStageUI;
+        GameManager.instance.OnRestart += UpdateStageUI;
     }
 
     private void OnDisable()
     {
-        GameManager.instance.OnUpdateStage -= UpdateStageUI;
+        GameManager.instance.OnRestart -= UpdateStageUI;
     }
 
     private void Init()

@@ -37,7 +37,7 @@ public class Unit : MonoBehaviour, IDamage
         {
             GameManager.instance.EnemyUnits.Remove(this);
         }
-        Destroy(gameObject, 0.1f);
+        UnitObjectPool.instance.Push(this);
     }
 
     public void SetParentTile(Tile newParent)

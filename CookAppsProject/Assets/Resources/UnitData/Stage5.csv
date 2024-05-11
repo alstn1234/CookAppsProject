@@ -1,0 +1,10 @@
+﻿Name,x,y
+EnemyMeleeAOEUnit,5,1
+EnemyMeleeAOEUnit,5,3
+EnemyMeleeAOEUnit,7,1
+EnemyMeleeAOEUnit,7,3
+EnemyRangedUnit,6,2
+EnemyMeleeUnit,5,2
+EnemyMeleeUnit,6,1
+EnemyMeleeUnit,6,3
+EnemyMeleeUnit,7,2

@@ -7,19 +7,23 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _timerText;
     private float _time;
+    private IEnumerator coroutine;
     private void Start()
     {
         GameManager.instance.OnBattle += BattleTimer;
+        GameManager.instance.OnRestart += ResetTimer;
     }
 
     private void OnDisable()
     {
         GameManager.instance.OnBattle -= BattleTimer;
+        GameManager.instance.OnRestart -= ResetTimer;
     }
 
     private void BattleTimer()
     {
-        StartCoroutine(StartTimer());
+        coroutine = StartTimer();
+        StartCoroutine(coroutine);
     }
 
     IEnumerator StartTimer()
@@ -35,5 +39,12 @@ public class Timer : MonoBehaviour
         {
             GameManager.instance.OnEndBattle?.Invoke();
         }
+    }
+
+    private void ResetTimer()
+    {
+        StopCoroutine(coroutine);
+        _time = 60f;
+        _timerText.text = string.Format("{0:N1}", _time);
     }
 }

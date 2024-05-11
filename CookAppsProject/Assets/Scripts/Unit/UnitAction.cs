@@ -12,7 +12,7 @@ public class UnitAction : MonoBehaviour
         _unitMovement = GetComponent<UnitMovement>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         GameManager.instance.OnBattle += StartAction;
     }
@@ -24,7 +24,8 @@ public class UnitAction : MonoBehaviour
 
     private void StartAction()
     {
-        StartCoroutine(StartBattle());
+        if(gameObject.activeSelf)
+            StartCoroutine(StartBattle());
     }
 
     IEnumerator StartBattle()
@@ -44,4 +45,5 @@ public class UnitAction : MonoBehaviour
             yield return wfsr;
         }
     }
+
 }

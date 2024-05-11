@@ -45,4 +45,10 @@ public class UnitHp : MonoBehaviour
     {
         _hpBarSlider.transform.localScale = new Vector3(x, 1, 1);
     }
+
+    public void ResetHp()
+    {
+        Hp = MaxHp;
+        UpdateHpBarUI();
+    }
 }

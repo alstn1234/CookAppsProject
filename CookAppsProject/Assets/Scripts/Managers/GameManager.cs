@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     public int Width = 10, Height = 5;
 
+    private const int _maxStage = 5;
     private int _stage;
     public int Stage
     {
@@ -21,12 +22,10 @@ public class GameManager : MonoBehaviour
         }
         set
         {
-            _stage = value > 3 ? 1 : value;
-            OnUpdateStage?.Invoke();
+            _stage = value > _maxStage ? 1 : value;
         }
     }
 
-    public Dictionary<string, GameObject> UnitPrefab;
     public Tile[,] Board;
     public List<Unit> MyUnits = new List<Unit>();
     public List<Unit> EnemyUnits = new List<Unit>();
@@ -37,7 +36,7 @@ public class GameManager : MonoBehaviour
     public GameObject BattleEndPopup;
     public Action OnBattle;
     public Action OnEndBattle;
-    public Action OnUpdateStage;
+    public Action OnRestart;
 
     private void Awake()
     {
@@ -58,16 +57,12 @@ public class GameManager : MonoBehaviour
         OnBattle += BattleMode;
         OnBattle += CheckEnd;
         OnEndBattle += EndBattle;
+        OnRestart += ReadyMode;
     }
 
     private void Init()
     {
         Board = new Tile[Width, Height];
-        UnitPrefab = new Dictionary<string, GameObject>();
-        foreach (var unit in Resources.LoadAll<GameObject>("Prefabs/Unit"))
-        {
-            UnitPrefab[unit.name] = unit;
-        }
         Stage = 1;
     }
 
