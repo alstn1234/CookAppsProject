@@ -55,10 +55,10 @@ public class Board : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        // 초기 유닛 세팅
         SetUnit();
     }
 
+    // 유닛 세팅
     public void SetUnit()
     {
         UnitObjectPool.instance.ResetPool();
@@ -79,7 +79,6 @@ public class Board : MonoBehaviour
                 int y = idx++ / (_width / 2);
 
                 unit.SetParentTile(_board[x, y]);
-                unit.SetPosToParent();
                 myUnits.Add(unit);
             }
         }
@@ -91,11 +90,9 @@ public class Board : MonoBehaviour
             var unitName = item["Name"];
             var x = int.Parse(item["x"]);
             var y = int.Parse(item["y"]);
-
             var unit = _pool.Pop(unitName);
 
             unit.SetParentTile(_board[x, y]);
-            unit.SetPosToParent();
             enemyUnits.Add(unit);
         }
     }

@@ -14,7 +14,7 @@ public class MeleeAOEUnit : Unit, IUnitAction
     private const int AttackRange = 2;
     public void Attack()
     {
-        FlipX();
+        FlipX(DecideDir(ParentTile.x, Target.ParentTile.x));
         animator.SetTrigger("Attack");
 
         // 광역 딜

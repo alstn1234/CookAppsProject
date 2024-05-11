@@ -24,20 +24,19 @@ public class UnitMovement : MonoBehaviour
     // 다음 위치로 움직이는 메서드
     public void Move()
     {
-        _animator.SetBool("IsMove", true);
         var nextPos = NextPos();
         if (nextPos == Vector2Int.zero) return;
+        _animator.SetBool("IsMove", true);
         var nextTile = GameManager.instance.Board[nextPos.x, nextPos.y];
+        _unit.FlipX(_unit.DecideDir(_unit.ParentTile.x, nextPos.x));
         StartCoroutine(MoveNextPos(nextTile));
     }
 
     IEnumerator MoveNextPos(Tile nextTile)
     {
         float finalTime = 0.8f;
-        float moveDelayTime = 0f;
         float time = 0f;
         float per = 0f;
-        yield return new WaitForSeconds(moveDelayTime);
         while (per < 1)
         {
             time += Time.deltaTime;

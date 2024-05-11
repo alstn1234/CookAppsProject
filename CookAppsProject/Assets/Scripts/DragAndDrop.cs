@@ -54,8 +54,8 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         // 옮길 수 없을 때
-        if(!isChangeTile)
-            transform.position = _unit.ParentTile.transform.position;
+        if (!isChangeTile)
+            _unit.SetPosToParent();
     }
     #endregion
 

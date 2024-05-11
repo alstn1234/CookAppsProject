@@ -27,6 +27,7 @@ public class Unit : MonoBehaviour, IDamage
     {
         return isMine == this.IsMine;
     }
+
     protected void Die()
     {
         if (IsMine)
@@ -44,12 +45,11 @@ public class Unit : MonoBehaviour, IDamage
     {
         if (newParent.CheckUnit())
         {
-            if (ParentTile != null) ParentTile.DeleteUnit();
+            ParentTile?.DeleteUnit();
             newParent.SetUnit(this);
             ParentTile = newParent;
         }
         SetPosToParent();
-        FlipX();
     }
 
     public void SetPosToParent()
@@ -87,15 +87,17 @@ public class Unit : MonoBehaviour, IDamage
         Target = closestEnemy;
     }
 
-    // target방향을 바라보는 메서드
-    public void FlipX()
+    public int DecideDir(int x1, int x2)
     {
-        int x = 1;
-        if (Target == null) return;
-        if (ParentTile.x > Target.ParentTile.x) 
-            x = -1;
-        transform.localScale = new Vector3(x, 1, 1);
-        unitHp.FlipXSlider(x);
+        return x1 == x2 ? 0 : x1 > x2 ? -1 : 1;
+    }
+
+    // dir방향을 바라보는 메서드
+    public void FlipX(int dir)
+    {
+        if (dir == 0) return;
+        transform.localScale = new Vector3(dir, 1, 1);
+        unitHp.FlipXSlider(dir);
     }
 
     // 공격 범위안에 드는지 확인하는 메서드

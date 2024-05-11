@@ -8,13 +8,11 @@ public class UnitAI
     private int _width = 10, _height = 5;
     private Vector2Int[] dirs = { new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1), new Vector2Int(-1, 0) };
 
-    /*
-    public Vector2Int FindNextPos(int startX, int startY, int targetX, int targetY)
+    // 상하좌우중 맨해튼 거리가 작은 위치를 반환하는 메서드
+    public Vector2Int FindNextPos2(Vector2Int startVec, Vector2Int targetVec)
     {
-        Vector2Int startVec = new Vector2Int(startX, startY);
-        Vector2Int targetVec = new Vector2Int(targetX, targetY);
         Vector2Int resultVec = Vector2Int.zero;
-        int distance = int.MaxValue;
+        int distance = CalDistance(startVec, targetVec);
 
         foreach (var dir in dirs)
         {
@@ -32,7 +30,7 @@ public class UnitAI
 
         return resultVec;
     }
-    */
+
 
     // A*알고리즘을 이용하여 최적의 길찾기 메서드
     public Vector2Int FindNextPos(int startX, int startY, int targetX, int targetY)
@@ -84,7 +82,7 @@ public class UnitAI
                 }
             }
         }
-        return Vector2Int.zero;
+        return FindNextPos2(startVec, targetVec);
     }
 
     private Vector2Int GetMinFCost(List<Vector2Int> searchList, Dictionary<Vector2Int, int> fCost)

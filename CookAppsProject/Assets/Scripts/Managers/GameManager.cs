@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [HideInInspector]
     public int Width = 10, Height = 5;
 
     private const int _maxStage = 5;
@@ -27,12 +28,17 @@ public class GameManager : MonoBehaviour
     }
 
     public Tile[,] Board;
+    [HideInInspector]
     public List<Unit> MyUnits = new List<Unit>();
+    [HideInInspector]
     public List<Unit> EnemyUnits = new List<Unit>();
 
+    [HideInInspector]
     public GameMode Mode = GameMode.Ready;
 
+    [HideInInspector]
     public TextMeshProUGUI resultText;
+    [HideInInspector]
     public GameObject BattleEndPopup;
     public Action OnBattle;
     public Action OnEndBattle;

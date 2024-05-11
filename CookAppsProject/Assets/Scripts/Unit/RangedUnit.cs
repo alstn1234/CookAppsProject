@@ -14,7 +14,7 @@ public class RangedUnit : Unit, IUnitAction
 
     public void Attack()
     {
-        FlipX();
+        FlipX(DecideDir(ParentTile.x, Target.ParentTile.x));
         animator.SetTrigger("Attack");
 
         if (Target != null && !Target.IsTeam(IsMine))

@@ -68,12 +68,14 @@ public class UnitObjectPool : MonoBehaviour
         var unitObj = unitPool.Dequeue();
         unitObj.GetComponent<UnitHp>().ResetHp();
         unitObj.SetActive(true);
+        unitObj.GetComponent<Unit>().ParentTile = null;
         return unitObj.GetComponent<Unit>();
     }
 
     public void Push(Unit unit)
     {
         unit.ParentTile.DeleteUnit();
+        unit.FlipX(1);
         unit.gameObject.SetActive(false);
         Pool[unit.name].Enqueue(unit.gameObject);
     }
