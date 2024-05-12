@@ -4,10 +4,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MeleeUnit : Unit, IUnitAction
 {
+    public int MaxHp;
     protected override void Awake()
     {
         base.Awake();
-        unitHp.MaxHp = 30;
+        unitHp.MaxHp = MaxHp;
     }
 
     public int Damage;

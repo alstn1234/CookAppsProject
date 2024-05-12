@@ -10,6 +10,8 @@ public class Timer : MonoBehaviour
     private IEnumerator coroutine;
     private void Start()
     {
+        coroutine = StartTimer();
+        ResetTimer();
         GameManager.instance.OnBattle += BattleTimer;
         GameManager.instance.OnRestart += ResetTimer;
     }
@@ -22,7 +24,6 @@ public class Timer : MonoBehaviour
 
     private void BattleTimer()
     {
-        coroutine = StartTimer();
         StartCoroutine(coroutine);
     }
 

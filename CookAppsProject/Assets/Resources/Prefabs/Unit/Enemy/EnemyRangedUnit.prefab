@@ -192,7 +192,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParentTile: {fileID: 0}
   Target: {fileID: 0}
-  Damage: 4
+  MaxHp: 30
+  Damage: 3
 --- !u!114 &-1612065345331388320
 MonoBehaviour:
   m_ObjectHideFlags: 0

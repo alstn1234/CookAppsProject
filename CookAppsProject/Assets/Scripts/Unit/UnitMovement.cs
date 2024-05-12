@@ -17,7 +17,7 @@ public class UnitMovement : MonoBehaviour
     // 다음 움직일 위치를 반환하는 메서드
     public Vector2Int NextPos()
     {
-        if (_unit.Target == null) return Vector2Int.zero;
+        if (_unit.Target == null) return Vector2Int.left;
         return _unitAI.FindNextPos(_unit.ParentTile.x, _unit.ParentTile.y, _unit.Target.ParentTile.x, _unit.Target.ParentTile.y);
     }
 
@@ -25,7 +25,7 @@ public class UnitMovement : MonoBehaviour
     public void Move()
     {
         var nextPos = NextPos();
-        if (nextPos == Vector2Int.zero) return;
+        if (nextPos == Vector2Int.left) return;
         _animator.SetBool("IsMove", true);
         var nextTile = GameManager.instance.Board[nextPos.x, nextPos.y];
         _unit.FlipX(_unit.DecideDir(_unit.ParentTile.x, nextPos.x));

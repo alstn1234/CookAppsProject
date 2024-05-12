@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class MeleeAOEUnit : Unit, IUnitAction
 {
+    public int MaxHp;
     protected override void Awake()
     {
         base.Awake();
-        unitHp.MaxHp = 20;
+        unitHp.MaxHp = MaxHp;
     }
 
     public int Damage;

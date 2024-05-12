@@ -52,7 +52,6 @@ public class Board : MonoBehaviour
                 _board[x, y] = tile;
             }
         }
-
         yield return new WaitForEndOfFrame();
 
         SetUnit();

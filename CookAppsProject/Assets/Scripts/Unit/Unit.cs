@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour, IDamage
 {
     [HideInInspector]
     public Tile ParentTile;
+    [HideInInspector]
     public Unit Target;
     protected bool IsMine;
 
@@ -28,7 +29,7 @@ public class Unit : MonoBehaviour, IDamage
         return isMine == this.IsMine;
     }
 
-    protected void Die()
+    private IEnumerator Die()
     {
         if (IsMine)
         {
@@ -38,6 +39,7 @@ public class Unit : MonoBehaviour, IDamage
         {
             GameManager.instance.EnemyUnits.Remove(this);
         }
+        yield return new WaitForSeconds(0.3f);
         UnitObjectPool.instance.Push(this);
     }
 
@@ -60,7 +62,7 @@ public class Unit : MonoBehaviour, IDamage
     public void TakeDamage(int damage)
     {
         unitHp.ChangeHp(damage);
-        if (unitHp.IsDie()) Die();
+        if (unitHp.IsDie()) StartCoroutine(Die());
         Debug.Log(gameObject.name + "가" + damage + "입음   남은 체력:" + unitHp.Hp);
     }
 

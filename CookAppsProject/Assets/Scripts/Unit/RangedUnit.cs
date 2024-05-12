@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class RangedUnit : Unit, IUnitAction
 {
+    public int MaxHp;
     protected override void Awake()
     {
         base.Awake();
-        unitHp.MaxHp = 15;
+        unitHp.MaxHp = MaxHp;
     }
 
     public int Damage;
