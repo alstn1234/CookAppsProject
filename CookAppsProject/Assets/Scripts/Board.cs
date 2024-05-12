@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
     private int _width;
     private int _height;
     private Tile[,] _board;
+    private int boardPadding;
     private GameObject _tilePrefab;
 
     private UnitObjectPool _pool;
@@ -39,6 +41,9 @@ public class Board : MonoBehaviour
 
     IEnumerator Init()
     {
+        // 1754 -> 보드판의 좌표상 가로 길이
+        boardPadding = (Screen.width - 1754) / 2;
+        GetComponent<GridLayoutGroup>().padding.left = boardPadding;
         // 보드판 세팅
         GameObject tileObject;
         for (int y = 0; y < _height; y++)
